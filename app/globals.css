@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #FDFAF7;
+  --rose: #D4537E;
+  --rose-dark: #B8416A;
+  --charcoal: #2C2C2A;
+  --blush: #FBEAF0;
+  --blush-2: #F6DCE5;
+  --muted: #8A8A86;
+  --border: #EFE6E0;
+}
+
+html, body {
+  background-color: var(--bg);
+  color: var(--charcoal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--blush-2);
+  color: var(--rose-dark);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.font-display {
+  font-family: var(--font-dm-sans), var(--font-inter), system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.font-sans {
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+.text-rose-accent { color: var(--rose); }
+.bg-rose-accent { background-color: var(--rose); }
+.bg-rose-accent-dark { background-color: var(--rose-dark); }
+.text-charcoal { color: var(--charcoal); }
+.bg-blush { background-color: var(--blush); }
+.bg-blush-2 { background-color: var(--blush-2); }
+.text-muted-warm { color: var(--muted); }
+.border-warm { border-color: var(--border); }
+
+.nav-link {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 1.5px;
+  background: var(--rose);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* --- Editorial / Awwwards-style utilities --- */
+
+.font-editorial {
+  font-family: var(--font-serif), Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  letter-spacing: -0.015em;
+  font-weight: 400;
+}
+
+/* subtle grain overlay — very light noise, GPU friendly */
+.grain {
+  position: relative;
+}
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.85'/></svg>");
+}
+
+/* --- Marquee (CSS-only, GPU-accelerated) --- */
+@keyframes marquee-x {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes marquee-x-reverse {
+  from { transform: translate3d(-50%, 0, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+.marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 2.5rem;
+  animation: marquee-x 45s linear infinite;
+  will-change: transform;
+}
+.marquee-track-reverse { animation-name: marquee-x-reverse; }
+.marquee-slow   { animation-duration: 60s; }
+.marquee-fast   { animation-duration: 35s; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+/* --- Timeline vertical line reveal --- */
+@keyframes line-grow {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+/* --- Magnet hover scale for project rows --- */
+.tilt-hover {
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+.tilt-hover:hover {
+  transform: translateY(-4px);
+}
+
+/* --- Screen / device mock shimmer --- */
+@keyframes shimmer {
+  0%   { transform: translate3d(-100%, 0, 0); }
+  100% { transform: translate3d(100%, 0, 0); }
+}
+.shimmer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+  animation: shimmer 4s ease-in-out infinite;
+}
